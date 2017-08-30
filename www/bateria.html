@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+        <div id="main">
+                <div>
+                      <button id="estado">
+                    Estado de la batería
+                    </button>
+                </div>
+                <div id="resultado">
+                    
+                </div>
+            </div>
+            <script>
+                var button = document.getElementById('estado');
+                var resultado = document.getElementById('resultado');
+            
+                var battery = navigator.battery || navigator.webkitBattery || navigator.mozBattery || navigator.msBattery;
+            
+                var checkStatus = function(){ // esta función creará nuestro HTML inicial para mostrar el estado
+                        
+                           resultado.innerHTML = '<div><ul>'+
+                                       '<li id="level">Nivel de batería: ' + Math.floor(battery.level * 100) + '%</li>'+
+                                       '<li id="charging">El aparato está: ' + (battery.charging ? "cargandose": "descargandose") + '</li>'+
+                                       '</ul></div>';
+                           };
+            
+                if (battery) { 
+                    button.onclick = function(){
+                        checkStatus();  // generamos el HTML inicial con su estado
+                                    // Luego lo actualizamos si detectamos un cambio en el estado de cargado/descargado
+                        battery.addEventListener('chargingchange', function(){
+                                    document.getElementById('charging').innerHTML = 'El aparato está: ' + (battery.charging ? "cargandose": "descargandose");
+                              });
+            
+                                 } 
+                } else { 
+                    button.onclick = function(){ //Si no soporta el API renderizamos un mensaje informativo.
+                        resultado.innerHTML = '<div><h2>Tu Browser no soporta este API</h2></div>';
+                        }
+                           
+                }
+            
+                    
+            </script> 
+</body>
+</html>
