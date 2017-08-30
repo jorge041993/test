@@ -14,3 +14,27 @@ console.log("el volumen de la esfera es:" +area_esfera);
 //le area del tringulo es:17.5
 //el area del circulo es:12.5664
 //el volumen de la esfera es:33.5104
+
+var myvar = "Jorge Sanchez";
+function mifuncion(){
+    alert(myvar);
+}
+console.log("hola como estas:" +myvar);
+
+
+
+var nombre = "jorge";
+function saludar(){
+    if(true){
+        var nombre = "antonio";
+    }
+    console.log(`hola ${nombre}`);
+}
+
+function saludar10(){
+    let i=0;
+    for(i; i<10; i++){
+        console.log(`hola ${nombre}`);  
+    }
+    console.log(`el valor de i es ${i}`)
+}
