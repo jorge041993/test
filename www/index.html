@@ -5,7 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <script src="js/distanciadeobjetos.js"></script>
+    <script>
+    var punto1 = new Object();
+punto1.x1= Math.random(0, 5);
+
+var punto2 = new Object();
+punto2.x2= Math.random(5, 10);
+
+function distancia(){
+var dx = punto2.x2 - punto1.x1;
+console.log("el valor de la distancia es:"+ dx);
+alert("el valor de la distancia entre los puntos es:"+ dx);
+console.log(punto2.x2, punto1.x1);
+};
+
+    </script>
 </head>
 <body>
     <input type="Button" value="aceptar" onclick="distancia()"/>
