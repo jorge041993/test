@@ -1,7 +1,7 @@
 
     html {
       box-sizing: border-box;
-      background:url('http://wes.io/hx9M/oh-la-la.jpg') center no-repeat;
+      background:url('https://www.mercawise.com/files/polls/5940365965.jpg') center no-repeat;
       background-size:cover;
       min-height:100vh;
       display:flex;
@@ -13,7 +13,7 @@
     *, *:before, *:after {box-sizing: inherit; }
 
     svg {
-      fill:white;
+      fill:#00FFFF;
       background: rgba(0,0,0,0.1);
       padding: 20px;
       border-radius: 50%;

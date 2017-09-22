@@ -16,6 +16,7 @@ body {
   background-size:cover;
   align-items: center;
   justify-content: center;
+  background: url("http://memeschistosos.net/wp-content/uploads/2015/07/memeseimagenesdegatos9.jpg");
 }
 
 .player {
@@ -46,7 +47,7 @@ body {
   background:none;
   border:0;
   line-height:1;
-  color:white;
+  color:#002A9E;
   text-align: center;
   outline:0;
   padding: 0;
@@ -99,7 +100,7 @@ body {
 
 .progress__filled {
   width:50%;
-  background:#ffc600;
+  background:#004AC0;
   flex:0;
   flex-basis:50%;
 }
@@ -120,7 +121,7 @@ input[type=range]::-webkit-slider-runnable-track {
   height: 8.4px;
   cursor: pointer;
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0), 0 0 1px rgba(13, 13, 13, 0);
-  background: rgba(255,255,255,0.8);
+  background: rgba(140, 246, 0, 0.8);
   border-radius: 1.3px;
   border: 0.2px solid rgba(1, 1, 1, 0);
 }
@@ -142,7 +143,7 @@ input[type=range]::-moz-range-track {
   height: 8.4px;
   cursor: pointer;
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0), 0 0 1px rgba(13, 13, 13, 0);
-  background: #ffffff;
+  background: #00FFF2;
   border-radius: 1.3px;
   border: 0.2px solid rgba(1, 1, 1, 0);
 }
