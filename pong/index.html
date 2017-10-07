@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pong</title>
+<!--para darle estylos a la pagina-->
+    <style>
+        *{
+            background: url(public/paisaje.jpg);
+            padding: 0;
+            margin: 0;
+        }
+
+        canvas{
+            background: url(public/paisaje2.jpg);
+            display: block;
+            margin: 0 auto;
+        }
+    
+    </style>
+</head>
+<body>
+    <!--para crear el lienzo de canvas-->
+    <canvas id= "myCanvas" width="480" height="320"></canvas>
+
+    <script>
+        /*Para realmente ser capaz de hacer gráficos en el <canvas>elemento,
+         primero tenemos que agarrar una referencia a ella en JavaScript. 
+         Agregue lo siguiente debajo de su <script>etiqueta de apertura.*/
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+/*mantendrá el radio del círculo dibujado y se usará para los cálculos.*/ 
+var ballRadius = 10;
+/*para declarar ancho y largo de canvas y que no haya colisiones*/
+var x = canvas.width/2;
+var y = canvas.height-30;
+/*queremos agregar un valor pequeño a x y y después de cada trama que se ha dibujado
+para que parezca que la pelota se está moviendo.*/
+var dx = 2;
+var dy = -2;
+/*espara crear las variables de movimiento del rectangulo donde se le van a 
+mandar a llamar por medio de un funcion.*/
+var paddleHeight = 10;
+var paddleWidth = 75;
+var paddleX = (canvas.width-paddleWidth)/2;
+var rightPressed = false;
+var leftPressed = false;
+/*El objetivo general de esta lección es renderizar unas pocas líneas de 
+código para los ladrillos, usando un bucle anidado que funciona a través 
+de una matriz bidimensional.*/
+var brickRowCount = 3;
+var brickColumnCount = 5;
+var brickWidth = 75;
+var brickHeight = 20;
+var brickPadding = 10;
+var brickOffsetTop = 30;
+var brickOffsetLeft = 30;
+/* variable para registrar la puntuación del juego.*/
+var score = 0;
+/*Variable para implementar vidas en el juego*/ 
+var lives = 3;
+
+
+/*Aquí hemos definido el número de filas y columnas de ladrillos, su anchura
+ y altura, el relleno entre los ladrillos para que no se toquen entre sí y un 
+ desplazamiento superior e izquierdo para que no empiecen a ser dibujado desde 
+ el borde de la lona.*/
+var bricks = [];
+for(c=0; c<brickColumnCount; c++) {
+    bricks[c] = [];
+    for(r=0; r<brickRowCount; r++) {
+        bricks[c][r] = { x: 0, y: 0, status: 1 };
+    }
+}
+
+document.addEventListener("keydown", keyDownHandler, false);
+document.addEventListener("keyup", keyUpHandler, false);
+/*Para escuchar el movimiento del ratón*/
+document.addEventListener("mousemove", mouseMoveHandler, false);
+/*funciones utlizadad para poder mover el rectangulo por medio de las teclas*/
+function keyDownHandler(e) {
+    if(e.keyCode == 39) {
+        rightPressed = true;
+    }
+    else if(e.keyCode == 37) {
+        leftPressed = true;
+    }
+}
+function keyUpHandler(e) {
+    if(e.keyCode == 39) {
+        rightPressed = false;
+    }
+    else if(e.keyCode == 37) {
+        leftPressed = false;
+    }
+}
+/*Para actualizar la posición de la paleta basándonos en las coordenadas del puntero*/
+function mouseMoveHandler(e) {
+    var relativeX = e.clientX - canvas.offsetLeft;
+    if(relativeX > 0 && relativeX < canvas.width) {
+        paddleX = relativeX - paddleWidth/2;
+    }
+}
+/*esta funcion sirve para detectar si la colicion sucede; si ocurre una colisión, 
+estableceremos el estado del ladrillo dado para 0 y que no se pinte en la pantalla.*/
+function collisionDetection() {
+    for(c=0; c<brickColumnCount; c++) {
+        for(r=0; r<brickRowCount; r++) {
+            var b = bricks[c][r];
+            if(b.status == 1) {
+                if(x > b.x && x < b.x+brickWidth && y > b.y && y < b.y+brickHeight) {
+                    dy = -dy;
+                    b.status = 0;
+/*Para otorgar una puntuación cada vez que se golpea un ladrillo.*/
+                    score++;
+/*Para mostrar un mensaje ganador cuando todos los ladrillos han sido destruidos*/
+                    if(score == brickRowCount*brickColumnCount) {
+                        alert("YOU WIN");
+                        document.location.reload();
+                    }
+                }
+            }
+        }
+    }
+}
+
+/*funcion para pintar la posicion de la pelota*/
+function drawBall() {
+    ctx.beginPath();
+    ctx.arc(x, y, ballRadius, 0, Math.PI*2);
+    ctx.fillStyle = "#c75a00";
+    ctx.fill();
+    ctx.closePath();
+}
+/*Esta dibujando el rectangulo donde va a rebotar nuestra pelotita*/
+function drawPaddle() {
+    ctx.beginPath();
+    ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
+    ctx.fillStyle = "#c75a00";
+    ctx.fill();
+    ctx.closePath();
+}
+/*para que cada ladrillo se puede colocar en su lugar correcto fila y columna, 
+con relleno entre cada ladrillo, dibujado en un desplazamiento de la izquierda 
+y los bordes de la lona superior.*/
+function drawBricks() {
+    for(c=0; c<brickColumnCount; c++) {
+        for(r=0; r<brickRowCount; r++) {
+/*A continuación vamos a comprobar el valor de la statuspropiedad de cada ladrillo
+ en la drawBricks()función antes de dibujarlo - si statuses 1, luego dibujar, 
+ pero si es 0, entonces fue golpeado por la pelota*/
+            if(bricks[c][r].status == 1) {
+                var brickX = (c*(brickWidth+brickPadding))+brickOffsetLeft;
+                var brickY = (r*(brickHeight+brickPadding))+brickOffsetTop;
+                bricks[c][r].x = brickX;
+                bricks[c][r].y = brickY;
+                ctx.beginPath();
+                ctx.rect(brickX, brickY, brickWidth, brickHeight);
+                ctx.fillStyle = "#c75a00";
+                ctx.fill();
+                ctx.closePath();
+            }
+        }
+    }
+}
+/*hace que la pelota valla mas rapido pero solamentente cuando te quitas una vida*/
+function ballHitPaddle(ball, paddle) {
+    ball.animations.play('wobble');
+    ball.body.velocity.x = -1*5*(paddle.x-ball.x);
+}
+/*Función para crear y actualizar la visualización de la puntuación.*/
+function drawScore() {
+    ctx.font = "16px Arial";
+    ctx.fillStyle = "#c75a00";
+    ctx.fillText("Score: "+score, 8, 20);
+}
+/*Para dibujar el contador de vida*/
+function drawLives() {
+    ctx.font = "16px Arial";
+    ctx.fillStyle = "#c75a00";
+    ctx.fillText("Lives: "+lives, canvas.width-65, 20);
+}
+/*-La funcion draw() ejecutará cada 10 milisegundos,
+las funciones creadas dentro de el y aparte hara otras funciones
+del codigo que se declararon dentro de el.*/
+
+function draw(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawBricks();
+    drawBall();
+    drawPaddle();
+    drawScore();
+    drawLives();
+    collisionDetection();
+    /*Esto es porque estamos calculando el punto de colisión de la pared y 
+    el centro de la bola, mientras que deberíamos hacerlo por su circunferencia.*/
+    if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
+        dx = -dx;
+    }
+/*crea el tipo de detección de colisión entre la pelota y la paleta, para 
+que pueda rebotar y volver a la zona de juego.*/
+    if(y + dy < ballRadius) {
+        dy = -dy;
+    }
+    else if(y + dy > canvas.height-ballRadius) {
+        if(x > paddleX && x < paddleX + paddleWidth) {
+            dy = -dy;
+        }
+        else {
+            lives--;
+                if(!lives){
+                alert("GAME OVER");
+                document.location.reload();
+            }
+            else {
+                x = canvas.width/2;
+                y = canvas.height-30;
+                dx = 3;
+                dy = -3;
+                paddleX = (canvas.width-paddleWidth)/2;
+            }
+        }
+    }
+    
+    if(rightPressed && paddleX < canvas.width-paddleWidth) {
+        paddleX += 7;
+    }
+    else if(leftPressed && paddleX > 0) {
+        paddleX -= 7;
+    }
+
+
+/*Esto es porque estamos calculando el punto de colisión de la pared y 
+el centro de la bola, mientras que deberíamos hacerlo por su circunferencia.*/
+    if(y + dy > canvas.height-ballRadius || y + dy < ballRadius) {
+        dy = -dy;
+    }
+/*-Es actualizar x y y con nuestra dx y dy variable sobre cada cuadro, por lo que
+la pelota va a ser pintado en la nueva posición en cada actualización.*/
+    x += dx;
+    y += dy;
+    /*para mandar a llamar a la funcion draw*/
+    requestAnimationFrame(draw);
+}
+draw();
+
+    
+    </script>
+    
+</body>
+</html>
