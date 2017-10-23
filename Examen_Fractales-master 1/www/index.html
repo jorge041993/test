@@ -1,0 +1,199 @@
+<html>
+
+<head>
+    <meta charset=utf-8>
+    <title>Burbujas</title>
+    <style>
+        body {
+            background-color: #ffffff;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #info {
+            position: absolute;
+            top: 0px;
+            width: 100%;
+            color: #000000;
+            padding: 5px;
+            font-family: Monospace;
+            font-size: 13px;
+            text-align: center;
+            z-index: 1;
+        }
+
+        a {
+            color: #000000;
+        }
+    </style>
+</head>
+<audio id="audio" src="sound/burbuja3.wav" autostart="false"></audio>
+<audio id="cumbion" src="sound/cumbion.mp3" autostart="false"></audio>
+
+<body>
+    <script src="js/three.js"></script>
+    <script src="js/controls/TrackballControls.js"></script>
+    <script src="js/renderers/CSS3DRenderer.js"></script>
+    <script src="js/shaders/FresnelShader.js"></script>
+    <script src="js/controls/DragControls.js"></script>
+
+    <script>
+        var camera, scene, renderer;
+        ///var scene2, renderer2;
+        var controls;
+        var objects = [];
+        var container;
+        var mouse, raycaster, isShiftDown = false;
+
+        init();
+        
+        animate();
+        playCumbion();
+        function init() {
+            container = document.createElement('div');
+            document.body.appendChild(container);
+            //Camara
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 10000);
+            camera.position.set(3200, 3200, 3200);
+            //Controles mouse
+            controls = new THREE.TrackballControls(camera);
+            //Esena
+            var path = "textures/cube/";
+            var format = '.jpg';
+            var urls = [
+                        path + 'px' + format, path + 'nx' + format,
+                        path + 'py' + format, path + 'ny' + format,
+                        path + 'pz' + format, path + 'nz' + format
+                    ];
+            var textureCube = new THREE.CubeTextureLoader().load( urls );
+			textureCube.format = THREE.RGBFormat;
+            scene = new THREE.Scene();
+            scene.background = textureCube;
+            //scene2 = new THREE.Scene();
+
+            //Grid
+            //var gridHelper = new THREE.GridHelper(100, 10);
+            //scene.add(gridHelper);
+
+            group = new THREE.Group(); //Grupo
+
+            //Forma del objeto
+            var geometry = new THREE.SphereGeometry(300, 32, 32);
+
+            //Propiedades de la esfera
+            var shader = THREE.FresnelShader;
+            var uniforms = THREE.UniformsUtils.clone( shader.uniforms );
+            uniforms[ "tCube" ].value = textureCube;
+
+            var material = new THREE.ShaderMaterial( {
+                uniforms: uniforms,
+                vertexShader: shader.vertexShader,
+                fragmentShader: shader.fragmentShader
+            } );
+
+
+            for (var i = 0; i < 200; i++) {
+                var sphere = new THREE.Mesh(geometry, material);
+
+                sphere.position.x = Math.random() * 10000 - 5000;
+                sphere.position.y = Math.random() * 10000 - 5000;
+                sphere.position.z = Math.random() * 10000 - 5000;
+
+                sphere.rotation.x = Math.random() * 10000 - 5000;
+                sphere.rotation.y = Math.random() * 10000 - 5000;
+                sphere.rotation.z = Math.random() * 10000 - 5000;
+                //Tamaño de la esfera
+                sphere.scale.x = sphere.scale.y = sphere.scale.z = Math.random() + 0.5;
+
+                group.add(sphere);
+                objects.push(sphere);
+
+            }
+            scene.add(group);
+            renderer = new THREE.WebGLRenderer();
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            //document.body.appendChild(renderer.domElement);
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFShadowMap;
+
+            container.appendChild(renderer.domElement);
+
+            raycaster = new THREE.Raycaster();
+            mouse = new THREE.Vector2();
+            //Arrarstrar la esfera
+            var dragControls = new THREE.DragControls(objects, camera, renderer.domElement);
+            dragControls.addEventListener('dragstart', function (event) { controls.enabled = false; });
+            dragControls.addEventListener('dragend', function (event) { controls.enabled = true; });
+
+            document.addEventListener('mousedown', onDocumentMouseDown, false);
+            document.addEventListener('keydown', onDocumentKeyDown, false);
+            document.addEventListener('keyup', onDocumentKeyUp, false);
+        }
+
+        function onDocumentMouseDown(event) {
+            event.preventDefault();
+            mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
+            mouse.y = - (event.clientY / renderer.domElement.clientHeight) * 2 + 1;
+            console.log("x " + mouse.x + "y " + mouse.y);
+            raycaster.setFromCamera(mouse, camera);
+            var intersects = raycaster.intersectObjects(objects);
+            if (intersects.length > 0) {
+                var intersect = intersects[0];
+                if (isShiftDown) {
+                    if (intersect.object != group) {
+                        group.remove(intersect.object);
+                        playSound();
+                    }
+                }
+            }
+        }
+        function onDocumentKeyDown(event) {
+            switch (event.keyCode) {
+                case 16: isShiftDown = true; break;
+            }
+        }
+        function onDocumentKeyUp(event) {
+            switch (event.keyCode) {
+                case 16: isShiftDown = false; break;
+            }
+        }
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            render();
+            renderer.render(scene, camera);
+        };
+        //Rotacion de cada una de las esferas sobre su propio eje, (Con el eje Y)
+              for (var i = 0; i < objects.length; i++) {
+                if(objects[i] !== undefined)
+                    objects[i].rotation.y += Math.PI / 100;
+        }
+        function render() {
+            var timer = 0.0001 * Date.now();
+            for (var i = 0, l = group.children.length; i < l; i++) {
+                var sphere = group.children[i];
+                sphere.position.x = 2500 * Math.cos(timer + i);
+                sphere.position.y = 2500 * Math.sin(timer + i * 1.1);
+            }
+            renderer.render(scene, camera);
+        }
+        function playSound() {
+            var sound = document.getElementById("audio");
+            sound.currentTime = 1;
+            sound.play()
+        }
+        function playCumbion() {
+            var sound = document.getElementById("cumbion");
+            sound.currentTime = 1;
+            sound.play()
+        }
+        function clickmose(event) {
+            //playSound(); No usar
+        }
+        window.addEventListener('click', clickmose, false);
+    </script>
+
+</body>
+
+</html>
