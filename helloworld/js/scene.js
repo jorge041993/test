@@ -126,6 +126,17 @@
         scene.add(mesh);
     })
 
+    loader.load('public/metal.jpg', function(texture){
+        let geometry = new THREE.CubeGeometry(10,10,10)
+        let material = new THREE.MeshBasicMaterial({
+            map: texture
+        })
+        mesh = new THREE.Mesh(geometry, material);
+
+        mesh.position.y =-2;
+        mesh.position.x = 30;
+        scene.add(mesh);
+    })
 
     //let geometry = new THREE.BoxGeometry(1,1,1,1);
 
