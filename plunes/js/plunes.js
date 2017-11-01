@@ -15,10 +15,10 @@
     camera.position.z = 30;
     camera.position.y = 5;
     let mesh;
-
+/*cilindro*/
     let loader = new THREE.TextureLoader();
       loader.load('public/cilindro.jpg', function(texture){
-        let geometry = new THREE.CylinderGeometry(10,10,10)
+        let geometry = new THREE.CylinderGeometry(5,5,5)
         let material = new THREE.MeshBasicMaterial({
             map: texture
         })
@@ -27,7 +27,30 @@
         mesh.position.y = 0;
         scene.add(mesh);
     })
+    /*cubo*/
+    loader.load('public/metal.jpg', function(texture){
+        let geometry = new THREE.CubeGeometry(5,5,5)
+        let material = new THREE.MeshBasicMaterial({
+            map: texture
+        })
+        mesh = new THREE.Mesh(geometry, material);
 
+        mesh.position.y =0;
+        mesh.position.x = 15;
+        scene.add(mesh);
+    })
+    /*tringulo*/
+    loader.load('public/metal.jpg', function(texture){
+        let geometry = new THREE.SphereGeometry(5,5,5)
+        let material = new THREE.MeshBasicMaterial({
+            map: texture
+        })
+        mesh = new THREE.Mesh(geometry, material);
+
+        mesh.position.y = 0;
+        mesh.position.x = -15;
+        scene.add(mesh);
+    })
 
     //let geometry = new THREE.BoxGeometry(1,1,1,1);
 

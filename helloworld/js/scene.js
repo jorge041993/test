@@ -125,7 +125,7 @@
         mesh.position.y = 0;
         scene.add(mesh);
     })
-
+/*cubo*/
     loader.load('public/metal.jpg', function(texture){
         let geometry = new THREE.CubeGeometry(10,10,10)
         let material = new THREE.MeshBasicMaterial({
