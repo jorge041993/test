@@ -41,7 +41,7 @@
         mesh.castShadow = true;
         scene.add(mesh);
     })
-/*pico de tetera*/
+/*pico de la tetera*/
     loader.load('public/mango.jpg', function(texture){
         let geometry = new THREE.CylinderGeometry(8, 7, 1, 5, 1, false)
         let material = new THREE.MeshBasicMaterial({
