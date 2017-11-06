@@ -28,7 +28,7 @@
 
     let loader = new THREE.TextureLoader();
 /*tetera*/
-    loader.load('public/hola.jpg', function(texture){
+    loader.load('public/rojote.jpg', function(texture){
         let geometry = new THREE.CylinderGeometry(6, 15, 20, 100, 1, false)
         let material = new THREE.MeshBasicMaterial({
             map: texture
@@ -116,7 +116,7 @@ loader.load('public/mango.jpg', function(texture){
 
                 /*TAZA 1*/
 /*plato*/
-loader.load('public/hola.jpg', function(texture){
+loader.load('public/rojote.jpg', function(texture){
     let geometry = new THREE.CylinderGeometry(5, 5, 1, 100, 1, false)
     let material = new THREE.MeshBasicMaterial({
         map: texture
@@ -130,7 +130,7 @@ loader.load('public/hola.jpg', function(texture){
     scene.add(mesh);
 })
 /*taza*/
-loader.load('public/cafe.jpg', function(texture){
+loader.load('public/rojo.jpg', function(texture){
     let geometry = new THREE.CylinderGeometry(5, 3, 5, 100, 1, false)
     let material = new THREE.MeshBasicMaterial({
         map: texture
@@ -185,7 +185,7 @@ loader.load('public/mango.jpg', function(texture){
 })
                 /*TAZA 2*/
 /*plato*/
-loader.load('public/hola.jpg', function(texture){
+loader.load('public/rojote.jpg', function(texture){
     let geometry = new THREE.CylinderGeometry(5, 5, 1, 100, 1, false)
     let material = new THREE.MeshBasicMaterial({
         map: texture
@@ -199,7 +199,7 @@ loader.load('public/hola.jpg', function(texture){
     scene.add(mesh);
 })
 /*taza*/
-loader.load('public/cafe.jpg', function(texture){
+loader.load('public/rojo.jpg', function(texture){
     let geometry = new THREE.CylinderGeometry(5, 3, 5, 100, 1, false)
     let material = new THREE.MeshBasicMaterial({
         map: texture
@@ -254,7 +254,7 @@ loader.load('public/mango.jpg', function(texture){
 })
             /*TAZA 3*/
 /*plato*/
-loader.load('public/hola.jpg', function(texture){
+loader.load('public/rojote.jpg', function(texture){
     let geometry = new THREE.CylinderGeometry(5, 5, 1, 100, 1, false)
     let material = new THREE.MeshBasicMaterial({
         map: texture
@@ -269,7 +269,7 @@ loader.load('public/hola.jpg', function(texture){
     scene.add(mesh);
 })
 /*taza*/
-loader.load('public/cafe.jpg', function(texture){
+loader.load('public/rojo.jpg', function(texture){
     let geometry = new THREE.CylinderGeometry(5, 3, 5, 100, 1, false)
     let material = new THREE.MeshBasicMaterial({
         map: texture
@@ -328,7 +328,7 @@ loader.load('public/mango.jpg', function(texture){
 })
                 /*TAZA 4*/
 /*plato*/
-loader.load('public/hola.jpg', function(texture){
+loader.load('public/rojote.jpg', function(texture){
     let geometry = new THREE.CylinderGeometry(5, 5, 1, 100, 1, false)
     let material = new THREE.MeshBasicMaterial({
         map: texture
@@ -343,7 +343,7 @@ loader.load('public/hola.jpg', function(texture){
     scene.add(mesh);
 })
 /*taza*/
-loader.load('public/cafe.jpg', function(texture){
+loader.load('public/rojo.jpg', function(texture){
     let geometry = new THREE.CylinderGeometry(5, 3, 5, 100, 1, false)
     let material = new THREE.MeshBasicMaterial({
         map: texture
