@@ -28,7 +28,7 @@
 
     let loader = new THREE.TextureLoader();
 /*tetera*/
-    loader.load('public/hola.jpg', function(texture){
+    loader.load('public/rojote.jpg', function(texture){
         let geometry = new THREE.CylinderGeometry(6, 15, 20, 100, 1, false)
         let material = new THREE.MeshBasicMaterial({
             map: texture
