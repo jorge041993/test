@@ -37,6 +37,7 @@
 
   texturas.push(loader.load('public/rojote.jpg'));
   texturas.push(loader.load('public/aluminio.jpg'));
+  /*cubo*/
   let geometry = new THREE.CubeGeometry(15, 15, 15, 100, 50, false);
   let material = new THREE.MeshBasicMaterial({
     map: texturas[0]
@@ -49,7 +50,7 @@
   cubo = mesh;
   cubo.textura = 0;
   scene.add(mesh);
-
+/*piramide*/
   geometry = new THREE.CylinderGeometry(0.5, 15, 15, 4, 1, false);
   material = new THREE.MeshBasicMaterial({
     map: texturas[0]
@@ -63,7 +64,7 @@
   piramide = mesh;
   piramide.textura = 0;
   scene.add(mesh);
-
+/*toroide*/
   geometry = new THREE.TorusGeometry(10, 5, 15, 100, 50, false);
   material = new THREE.MeshBasicMaterial({
     map: texturas[0]
